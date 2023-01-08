@@ -1,0 +1,37 @@
+-- Basic Commands --
+
+#Pull docker image
+docker pull image_name
+
+#Run nginx container in attach mode
+docker run nginx
+
+#Run nginx container in detach mode - brings back to console prompt
+docker run -d nginx
+
+#Run a container with the name webapp
+docker run --name webapp nginx 
+
+#Execute a command on a running container
+docker exec container_id cat /etc/*release*
+
+#Attach to a running container
+docker attach container_name
+
+#List running containers
+docker ps 
+
+#List exited containers
+docker ps -a 
+
+#Remove container
+docker rm container_name
+
+#Stop running container
+docker stop container_name
+
+#Listeimages
+docker images
+
+#Remove image
+docker rmi image_name
