@@ -1,0 +1,19 @@
+-- Docker Run --
+
+#Docker run with image tag
+docker run redis:4.0
+
+#Run a container in stdin mode - interactive(i) and terminal(t) mode
+docker run -it application-image
+
+#Port mapping - Run and map a container port to an external port
+docker run -p externalPort:internalPort application-image
+
+#Volume mapping - map a container directory to an external directory
+docker run -v /directory/outside:directory/inside application-image
+
+#Inspect container - Find details on a container
+docker inspect container_name
+
+#Container logs - See a container logs 
+docker logs container_name
