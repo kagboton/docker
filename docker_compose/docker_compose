@@ -1,0 +1,89 @@
+-- Docker Compose --
+
+Configuration file in yaml format
+Run multiples applications in a simple docker host
+
+#We can link applications together
+docker run -d --name=redis redis
+docker run -d --name=vote -p 5000:80 --link redis:redis voting-app
+
+The are better way to link applications by using docker-compose.
+Their are 3 versions of docker-compose
+
+-- docker-compose.yml v1 --
+redis: 
+  image: redis
+vote:
+  image: voting-app
+  ports:
+	- 5000:80
+  links:
+	- redis
+-- docker-compose.yml v1 --
+
+or 
+
+-- docker-compose.yml v2 --
+version: 2
+services:
+    redis: 
+	  image: redis
+	vote:
+	  build: ./vote #build the image
+	  ports:
+	    - 5000:80
+	  depends_on:
+	    - redis
+-- docker-compose.yml v2 --
+
+or 
+
+-- docker-compose.yml v3 - support docker swarm --
+version: 3
+services:
+    redis: 
+	  image: redis
+	vote:
+	  build: ./vote #build the image
+	  ports:
+	    - 5000:80
+-- docker-compose.yml v3 --
+
+#Run all applications
+docker compose up 
+
+
+#We can sererape applications in differents networks
+-- docker-compose.yml v2 --
+version: 2
+services:
+    redis: 
+	  image: redis
+	  networks:
+	    - back-end
+	vote:
+	  image: voting-app
+	  ports:
+	    - 5000:80
+	  depends_on:
+	    - redis
+	  networks:
+	    - front-end
+		- back-end
+
+networks:
+  front-end:
+  back-end:
+-- docker-compose.yml v2 --
+
+Practice: Example Voting App - https://github.com/dockersamples/example-voting-app
+#Run and link all apps the old fashion way without docker-compose - Make sur to build all the images 'voting-app',  'worker-app' and 'result-app'
+docker run -d --name=redis redis
+docker run -d --link redis:redis -p 5000:80 voting-app
+docker run -d --name=db -e POSTGRES_PASSWORD=password postgres:9.4
+docker run -d --link redis:redis --link db:db worker-app
+docker run -d -p 5001:80 --link db:db result-app
+
+References: 
+https://docs.docker.com/compose/
+https://docs.docker.com/engine/reference/commandline/compose/
