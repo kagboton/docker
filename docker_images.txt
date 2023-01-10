@@ -1,0 +1,61 @@
+-- Docker Images --
+
+A docker image has a layered architecture
+
+#View an image layers information 
+docker history kagboton/my-app
+
+#Create our own image form a 'Dockerfile'
+
+FROM ubuntu
+RUN apt-get update && apt-get -y install python
+RUN pip install flask flask-mysql
+COPY . /opt/source-code
+ENTRYPOINT  FLASK_APP=/opt/source-code/app.py flask run
+
+
+#Build the image from the Dockerfile and give it a tag
+docker bluild . -f Dockerfile -t kagboton/my-simple-webapp
+
+#Push the image to docker hub
+docker push kagboton/my-simple-webapp
+
+
+-- Environment variables --
+
+#We have the variable APP_COLOR export from our app
+export APP_COLOR=blue; python app.py
+
+#Run a container and set an environment variable
+docker run -e APP_COLOR=green simple-webapp-color
+
+#Start a container named mysql-db from mysql image and set the root password to db_pass123
+docker run --name mysql-db -e MYSQL_ROOT_PASSWORD=db_pass123 mysql
+
+
+-- Command vs Entrypoint --
+Commande to replace - Entrypoint to append
+
+#Define 'sleep 5' as default command inside the Dockerfile
+FROM ubuntu
+CMD command param1 => CMD sleep 5
+or
+CMD ["command", "param1"] => CMD ["sleep", "5"] (JSON format)
+
+#Run a container and Override the default command
+docker run ubuntu sleep 10
+
+#Create docker image with Entrypoint
+FROM ubuntu
+ENTRYPOINT ["sleep"]
+
+#Run a container and Append param
+docker run ubuntu-sleeper 10
+
+#Build an image with default command that can be override
+FROM ubuntu
+ENTRYPOINT ["sleep"]
+CMD ["5"]
+
+#Override entrypoint
+docker run --entrypoint sleep2.0 ubuntu-sleeper 10
