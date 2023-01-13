@@ -59,3 +59,24 @@ docker system df
 
 #Have more details about disk usage
 docker system df -v 
+
+
+-- Docker Networking --
+
+Installing docker creates 3 networks
+- Bridge - Default
+- None 
+- Host
+
+#Run a container in different network
+docker run ubuntu ==> delault bridge mode. All containers shared this network by default
+docker run ubuntu --network=none ==> no network - isolated mode
+docker run ubuntu --network=host ==> directly connected to the host network
+
+#Create our own internal bridge network
+docker network create --driver bridge --subnet 182.18.0.0/16 custom-isolated-network
+
+#List all networks
+docker network ls
+
+Container can reach themself with their name, thanks to the embedded DNS
