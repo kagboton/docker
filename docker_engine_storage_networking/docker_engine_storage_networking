@@ -22,3 +22,32 @@ docker run --memory=100m ubuntu
 
 #See PID of a container
 docker exec conatiner_id ps -eaf
+
+
+-- Docker Storage --
+
+Copy-on-write mecanisime : 
+A file inside an docker image is read only. 
+When creating a docker container based on that image, a copy of this file is created on with read and write access.
+The container version is different from the image version. The file in the image is remaining the same.
+
+The changes made on the container level are delete when the container is deleted. 
+We can use docker volume to persiste data 
+
+#Create a folder under /var/lib/docker/volume/data_volume on the docker host - For windows it may be different
+docker volume create  data_volume 
+
+#Volume mounting - 	Run a container with volume - If the volume doesnt exist, docker will create one
+docker run -v data_volume:/var/lib/mysql mysql
+
+#Bind mounting - Mount a directory from any location on the docker host
+docker run -v data/mysql:/var/lib/mysql mysql
+
+#New way to use volumes
+docker run --mount type=bind,source=data/mysql,target=/var/lib/mysql mysql
+
+Docker uses Storage drivers to manage storage
+- AUFS is the default storage driver on ubuntu
+
+Other storage drivers
+- ZFS, BTRFS, Device Mapper, Overlay, Overlay2
