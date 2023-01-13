@@ -26,6 +26,8 @@ docker exec conatiner_id ps -eaf
 
 -- Docker Storage --
 
+Docker root folder: /var/lib/docker
+
 Copy-on-write mecanisime : 
 A file inside an docker image is read only. 
 When creating a docker container based on that image, a copy of this file is created on with read and write access.
@@ -51,3 +53,9 @@ Docker uses Storage drivers to manage storage
 
 Other storage drivers
 - ZFS, BTRFS, Device Mapper, Overlay, Overlay2
+
+#Show the actual disk usage of docker
+docker system df
+
+#Have more details about disk usage
+docker system df -v 
