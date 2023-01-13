@@ -1,0 +1,49 @@
+-- Docker Swarm and Kubernetes --
+
+-- Container Orchestration
+Manage multiple containers
+docker service create --replicas=100 nodejs
+
+-- Docker Swarm Orchestration
+Combine multiple docker machines together into a same cluster
+We must have multiple host, one of them should be the Swarm Manager
+The other hosts are Node worker
+
+#Swarm Manager
+doker swarm init
+
+#Node Worker
+Docker swarm joint --token <token>
+
+#Run multiple instances of an application - Swarm Manager only
+docker service create --replicas=3 my-web-server
+
+-- Kubernetes from Google 
+#kubectl: k8 CLI
+
+kubectl run --replicas=1000 my-web-server
+kubectl scale --replicas=2000 my-web-server
+kubectl rolling-update my-web-server --image=web-server:2
+kubectl rolling-update my-web-server --rollback
+
+#View cluster info
+kubectl cluster-info
+
+#List all the nodes part of the cluster
+kubectl get nodes
+
+Node: host containers 
+Cluster: Set of nodes
+Master: A special Node, orchestrate containers of the other nodes
+
+Kubernetes componentents
+API Server : act like k8s front-end. To interact with the cluster
+etcd: distributed key-value store.
+scheduler: distributes loads btw nodes 
+controller : notice if container is up or down. decide to bring in new containers
+container runtime: software used to run container (docker)
+kubelet: agent making sur containers are running on node as expected
+
+
+
+- MESOS from Apache
