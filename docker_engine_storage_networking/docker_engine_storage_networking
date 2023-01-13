@@ -1,0 +1,24 @@
+-- Docker Engine --
+
+Docker Engine = 
+
+	Docker Deamon 
+	+ 
+	REST API 
+	+ 
+	Docker CLI (can be host on another device)
+
+A process running inside a container has it PID on the container 
+and also on the underline host. 	
+Docker containers share the same ressources (CPU + Memory) with the host 
+
+Their is no limit in how much ressources containers can use in the host
+
+#Limits to 50% the usage of CPU by a container
+docker run --cpus-.5 ubuntu
+
+#Limits to 100M the amount of memory used by a container
+docker run --memory=100m ubuntu
+
+#See PID of a container
+docker exec conatiner_id ps -eaf
